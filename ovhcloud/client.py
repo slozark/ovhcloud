@@ -1,8 +1,6 @@
-import json
-import os
-import requests
-import ovh
 import sys
+
+import ovh
 
 import ovhcloud
 
@@ -14,7 +12,7 @@ class Launcher(object):
             if _configuration_dir is None else _configuration_dir
 
         #Uses ovh.conf file
-        self._ovh_client = ovh.Client()
+        self._ovhclient = ovh.Client(config_file='./ovh.conf3')
 
     @property
     def configuration_dir(self):
@@ -25,19 +23,16 @@ class Launcher(object):
         return self._cache_file
 
     @property
-    def ovh_client(self):
+    def ovhclient(self):
         return self._ovhclient
-
 
 
 
 
 def main():
     client = Launcher(sys.argv[1:])
-    #client.action()
 
-    client.ovh_client.
-
+    print(client.ovhclient.get('/me'))
 
 if __name__ == '__main__':
     main()

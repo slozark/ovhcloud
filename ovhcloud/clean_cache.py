@@ -1,14 +1,14 @@
 import os
-import ovhcloud
 
+from ovhcloud import client
 
 
 def checkCache(api_data):
 
     #Create the directory if doesn't exist
     try:
-        if not os.path.exists(ovhcloud.CACHE_PATH):
-            os.makedirs(ovhcloud.CACHE_PATH)
+        if not os.path.exists(client.CACHE_PATH):
+            os.makedirs(client.CACHE_PATH)
     except Exception as e:
         print(e)
 
@@ -17,7 +17,7 @@ def checkCache(api_data):
         filename = url[u'path'] + ".json"
 
         #Download json data and store it as a file when not cached yet
-        if not os.path.exists(ovhcloud.CACHE_PATH + filename):
+        if not os.path.exists(client.CACHE_PATH + filename):
 
             '''
             request_data = requests.get(url=OVH_URL + '/1.0' + filename);
