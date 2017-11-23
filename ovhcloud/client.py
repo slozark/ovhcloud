@@ -2,7 +2,6 @@ import argparse
 import ovh
 
 import ovhcloud
-from cache_manager import CacheManager
 
 
 class Launcher(object):
@@ -38,10 +37,12 @@ class Launcher(object):
 '''
 
 def main():
+    from cache_manager import CacheManager
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--conf-dir', dest="conf_dir")
     parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
-    parser.add_argument('-a', '--api', dest='ovh_com')
+    parser.add_argument('-a', '--api', dest='cli_req')
     args = parser.parse_args()
 
     # Should I add an arg to force cache cleaning ?
@@ -49,17 +50,7 @@ def main():
     client = Launcher(_configuration_dir=args.conf_dir, _configuration_file=args.conf_ovh)
 
     cache = CacheManager(client)
-    cache.checkCache()
-    #client.start()
-
-    '''
-    test = client.ovhclient.get(_target="/me")
-    print(test)
-    
-    json_ret = client.ovhclient.get(ovh_com)
-
-    print(client.ovhclient.get('/me'))
-    '''
+    cache.checkCache(args.cli_req)
 
 
 if __name__ == '__main__':
