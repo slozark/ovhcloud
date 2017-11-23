@@ -35,7 +35,7 @@ class CacheManager(object):
         if new_cache:
             #We need to make a new file and store the existing APIs in it
             with open(self.client.configuration_dir + CACHE_FILE, 'w') as outfile:
-                json.dump(OVH_AllApis(), outfile)
+                json.dump(OVH_AllApis(ovhcloud.OVH_API_URL), outfile)
         else:
             #Check if url user requested exists
             json_data = open(self.client.configuration_dir + CACHE_FILE).read()

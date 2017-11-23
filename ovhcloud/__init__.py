@@ -9,6 +9,6 @@ __version__ = '0.1'
 
 DEFAULT_CONFIGURATION_DIR = os.path.expanduser('~/.ovhcloud/')
 
-OVH_API_URL = 'https://api.ovh.com/1.0/?null#null'
+OVH_API_URL = 'https://api.ovh.com/1.0'
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
