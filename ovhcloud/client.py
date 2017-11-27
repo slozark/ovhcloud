@@ -3,15 +3,7 @@ import os
 import ovh
 import ovhcloud
 from api_handler import OVH_Request
-
-
-class ArgumentError(Exception):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
+from errors import ArgumentError, InternalError
 
 class Launcher(object):
     def __init__(self, _args=None):
@@ -46,11 +38,14 @@ def check_args():
     parser.add_argument('-r', '--request-data', dest='req_data')
     args = parser.parse_args()
 
-    if ((args.rest_method).lower() not in ovhcloud.REST_METHODS):
+    # Ensure REST method validity
+    if (args.rest_method is None or (args.rest_method).lower() not in ovhcloud.REST_METHODS):
         raise ArgumentError('method')
-    if (not os.path.exists(os.path.expanduser(args.conf_ovh))):
+    # Ensure conf file validity
+    if (False and not os.path.isfile(args.conf_ovh)):
         raise ArgumentError('conf-ovh')
-    if (args.conf_dir != None and not os.path.exists(os.path.expanduser(args.conf_dir))):
+    # Ensure conf dir is a path
+    if (False and args.conf_dir != None and not os.path.exists(os.path.expanduser(args.conf_dir))):
         raise ArgumentError('conf-dir')
 
     return args
@@ -68,7 +63,10 @@ def main():
         cache.checkCache(request)
 
     except ArgumentError as e:
-        print("Invalid argument %s, aborting." % (e.value))
+        print("Invalid argument \"%s\", aborting." % (e.value))
+        exit(1)
+    except InternalError as e:
+        print("Internal Error.  Message : %s" % (e.value))
         exit(1)
 
 

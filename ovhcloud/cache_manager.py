@@ -43,7 +43,7 @@ class CacheManager(object):
             api_handler = None
             for api in cache_data["apis"]:
                 if (api["path"] == request.url):
-                    api_handler = Api_Handler(api, self.client.ovhApi)
+                    api_handler = Api_Handler(self.client.ovhApi, request)
                     continue
 
             if api_handler is None:

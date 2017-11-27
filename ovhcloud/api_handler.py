@@ -3,6 +3,7 @@ import requests
 import ovhcloud
 
 from ovh import Client as OvhClient
+from errors import InternalError
 
 # This class is used to store the clients request values
 # @url : The requested url (ex : /me/accessRestriction/enable)
@@ -11,7 +12,7 @@ from ovh import Client as OvhClient
 class OVH_Request(object):
     def __init__(self, cli_req, rest_method,request_data):
         self._url = cli_req
-        self._method = rest_method
+        self._method = rest_method.lower()
         self._data = request_data
 
     @property
@@ -28,17 +29,26 @@ class OVH_Request(object):
 
 
 class Api_Handler(object):
-    def __init__(self, api_data, ovh_client: OvhClient):
-        self._api_data = api_data
+    def __init__(self, ovh_client: OvhClient, request : OVH_Request):
+        self._ovh_request = request
         self._ovh_client = ovh_client
 
     def request(self):
-        print("Request")
+        print('Request')
 
-        response = OVH_AllApis(ovhcloud.OVH_API_URL + self._api_data['path'] + '.json')
+        response = None
 
-        #TODO Only works on basic apis for now
-        #response = self._ovh_client.get(self._api_data['path'])
+        if(self._ovh_request.method == 'get'):
+            response = self._ovh_client.get(self._ovh_request.url)
+        elif(self._ovh_request.method == 'post'):
+            response = self._ovh_client.post(self._ovh_request.url)
+        elif(self._ovh_request.method == 'put'):
+            response = self._ovh_client.put(self._ovh_request.url)
+        elif(self._ovh_request.method == 'delete'):
+            response = self._ovh_client.delete(self._ovh_request.url)
+        else:
+            raise InternalError('Invalid REST method')
+
         print(response)
 
 
