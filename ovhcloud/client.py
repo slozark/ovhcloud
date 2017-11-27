@@ -1,6 +1,9 @@
 import argparse
+import os
 import ovh
 import ovhcloud
+from api_handler import OVH_Request
+
 
 class ArgumentError(Exception):
     def __init__(self, value):
@@ -29,24 +32,8 @@ class Launcher(object):
         return self._configuration_file
 
     @property
-    def cache_file(self):
-        return self._cache_file
-
-    @property
     def ovhApi(self):
         return self._ovhApi
-
-    @property
-    def requestUrl(self):
-        return self._requestUrl
-
-
-'''
-    def start(self):
-        cache = CacheManager(self)
-        cache.checkCache()
-'''
-
 
 def check_args():
     # Should I add an arg to force cache cleaning ?
@@ -56,10 +43,15 @@ def check_args():
     parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
     parser.add_argument('-a', '--api', dest='cli_req')
     parser.add_argument('-m', '--method', dest='rest_method')
+    parser.add_argument('-r', '--request-data', dest='req_data')
     args = parser.parse_args()
 
-    #if (True):
-     #   raise ArgumentError('test')
+    if ((args.rest_method).lower() not in ovhcloud.REST_METHODS):
+        raise ArgumentError('method')
+    if (not os.path.exists(os.path.expanduser(args.conf_ovh))):
+        raise ArgumentError('conf-ovh')
+    if (args.conf_dir != None and not os.path.exists(os.path.expanduser(args.conf_dir))):
+        raise ArgumentError('conf-dir')
 
     return args
 
@@ -70,9 +62,10 @@ def main():
     try:
         args = check_args()
         client = Launcher(args)
+        request = OVH_Request(args.cli_req, args.rest_method, args.req_data)
 
         cache = CacheManager(client)
-        cache.checkCache(args.cli_req)
+        cache.checkCache(request)
 
     except ArgumentError as e:
         print("Invalid argument %s, aborting." % (e.value))
