@@ -6,12 +6,12 @@ from api_handler import OVH_Request
 from errors import ArgumentError, InternalError
 
 class Launcher(object):
-    def __init__(self, _args=None):
+    def __init__(self, conf_dir=None, conf_ovh=None):
         self._configuration_dir = ovhcloud.DEFAULT_CONFIGURATION_DIR \
-            if _args.conf_dir is None else _args.conf_dir
+            if conf_dir is None else conf_dir
 
         self._configuration_file = ovhcloud.DEFAULT_CONFIGURATION_DIR + '/ovh.conf' \
-            if _args.conf_ovh is None else _args.conf_ovh
+            if conf_ovh is None else conf_ovh
 
         self._ovhApi = ovh.Client(config_file=self.configuration_file)
 
@@ -28,10 +28,10 @@ class Launcher(object):
         return self._ovhApi
 
 def check_args():
-    # Should I add an arg to force cache cleaning ?
 
+    # Should I add an arg to force cache cleaning ?
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--conf-dir', dest="conf_dir")
+    parser.add_argument('-d', '--conf-dir', dest='conf_dir')
     parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
     parser.add_argument('-a', '--api', dest='cli_req')
     parser.add_argument('-m', '--method', dest='rest_method')
@@ -42,21 +42,31 @@ def check_args():
     if (args.rest_method is None or (args.rest_method).lower() not in ovhcloud.REST_METHODS):
         raise ArgumentError('method')
     # Ensure conf file validity
+    # TODO
     if (False and not os.path.isfile(args.conf_ovh)):
         raise ArgumentError('conf-ovh')
     # Ensure conf dir is a path
+    # TODO
     if (False and args.conf_dir != None and not os.path.exists(os.path.expanduser(args.conf_dir))):
         raise ArgumentError('conf-dir')
 
     return args
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+
+
 def main():
     from cache_manager import CacheManager
 
     try:
+        args = parse_args()
+        exit(0)
+        
         args = check_args()
-        client = Launcher(args)
+        client = Launcher(args.conf_dir, args.conf_ovh)
         request = OVH_Request(args.cli_req, args.rest_method, args.req_data)
 
         cache = CacheManager(client)

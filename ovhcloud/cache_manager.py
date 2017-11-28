@@ -42,6 +42,13 @@ class CacheManager(object):
 
             api_handler = None
             for api in cache_data["apis"]:
+
+                # We get the primary part of the urls and compare them
+                # Ex : /me/foo/thing -> /me
+                # TODO
+
+
+
                 if (api["path"] == request.url):
                     api_handler = Api_Handler(self.client.ovhApi, request)
                     continue
