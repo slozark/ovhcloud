@@ -33,9 +33,6 @@ def check_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--conf-dir', dest='conf_dir')
     parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
-    parser.add_argument('-a', '--api', dest='cli_req')
-    parser.add_argument('-m', '--method', dest='rest_method')
-    parser.add_argument('-r', '--request-data', dest='req_data')
     args = parser.parse_args()
 
     # Ensure REST method validity
@@ -55,7 +52,17 @@ def check_args():
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument(dest='rest', choices=ovhcloud.REST_METHODS, nargs='?')
 
+    args = parser.parse_args()
+    test = ''
+
+    if args.rest is None:
+        test = 'get'
+    elif args.rest.lower() in ovhcloud.REST_METHODS:
+        test = args.rest
+
+    print('RESULTAT PARSER : %s' % test)
 
 
 def main():

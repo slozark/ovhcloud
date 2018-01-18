@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='ovhcloud',
@@ -8,7 +8,6 @@ setup(
     setup_requires=['setuptools_scm==1.15.5'],
 
     description='A command-line tool for OVH API',
-    #long_description=long_description,
 
     url='https://github.com/slozark/ovhcloud',
 
@@ -30,7 +29,7 @@ setup(
 
     keywords='cloud ovh',
 
-    #packages=find_packages(exclude=['tests']),
+    packages=['ovhcloud'],
 
     package_data={'ovhcloud': ['endpoints_cache.json']},
 
@@ -42,9 +41,11 @@ setup(
 
     include_package_data=True,
 
+    scripts=['client.py'],
+
     entry_points={
         'console_scripts': [
-            'ovhcloud=client:main',
+            'ovhcloud=ovhcloud.client:main',
         ],
     },
 )
