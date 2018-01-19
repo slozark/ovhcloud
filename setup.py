@@ -41,7 +41,7 @@ setup(
 
     include_package_data=True,
 
-    scripts=['client.py'],
+    #scripts=['client.py'],
 
     entry_points={
         'console_scripts': [

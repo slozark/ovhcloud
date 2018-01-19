@@ -52,17 +52,22 @@ def check_args():
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument(dest='rest', choices=ovhcloud.REST_METHODS, nargs='?')
+    #Allows for a custom config
+    parser.add_argument('-d', '--conf-dir', dest='conf_dir')
+    parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
+    #Gets the REST Method : 'get' by default or must specify {get,post,put,delete}
+    parser.add_argument(dest='rest_type', choices=ovhcloud.REST_METHODS, nargs='?', default='get')
+    #Put other args in a var so we can process them
+    parser.add_argument(dest='api_com', nargs=argparse.REMAINDER)
+
+    '''
+    parser.add_argument(dest='temp')
+    parser.add_argument(dest='foo')
+    '''
 
     args = parser.parse_args()
-    test = ''
 
-    if args.rest is None:
-        test = 'get'
-    elif args.rest.lower() in ovhcloud.REST_METHODS:
-        test = args.rest
-
-    print('RESULTAT PARSER : %s' % test)
+    print('RESULTAT PARSER : %s' % args.rest_type)
 
 
 def main():
