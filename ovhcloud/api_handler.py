@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 import json
 
 import ovh as ovh
@@ -9,18 +11,24 @@ from errors import InternalError
 
 
 # This class is used to store the clients request values
-# @url : The requested url (ex : /me/accessRestriction/enable)
-# @method : The REST method type (ex: POST)
-# @data : Data for REST
+# @cli_req : The requested url (ex : /me/accessRestriction/enable)
+# @rest_method : The REST method type (ex: POST)
+# @request_data : Data for REST (put/post)
+# @show_info : flag asking for information
 class Ovh_Request(object):
-    def __init__(self, cli_req, rest_method, request_data):
+    def __init__(self, cli_req, show_info, rest_method, request_data):
         self._url = self.build_url(cli_req)
+        self._show_info = show_info
         self._method = rest_method.lower()
         self._data = request_data
 
     @property
     def url(self):
         return self._url
+
+    @property
+    def showInfo(self):
+        return self.showInfo
 
     @property
     def method(self):
@@ -45,6 +53,11 @@ class Api_Handler(object):
 
     def request(self):
 
+        # If the user asked for information, only display that information
+        if (self._ovh_request.showInfo):
+            print(self.display_info())
+            exit(0)
+
         response = None
 
         # Handle specific treatment and generic exceptions (eg invalid URL)
@@ -65,7 +78,8 @@ class Api_Handler(object):
             exit(1)
         except ovh.exceptions.BadParametersError as e:
             print(str(e))
-            showApiArguments(self._ovh_request.url, self._ovh_request.method)
+            print("See the list of properties for this API below :\n" + showApiArguments(self._ovh_request.url,
+                                                                                         self._ovh_request.method))
             exit(1)
 
         self.printResult(response)
@@ -90,6 +104,10 @@ class Api_Handler(object):
     def launch_delete(self):
         response = self._ovh_client.delete(self._ovh_request.url)
 
+    # Based on the command line provided, the displayed information changes
+    def display_info(self):
+        return ""
+
 
 def showApiArguments(url, rest_type):
     url_base = url.split('/')[1]
@@ -98,7 +116,13 @@ def showApiArguments(url, rest_type):
 
     selected_api = [s for s in base_api_json['apis'] if s['path'] == url][0]
     selected_data = [s for s in selected_api['operations'] if s['httpMethod'] == rest_type.upper()][0]
-    print(base_api_data)
+
+    display_text = '\nPROPERTY\t\tREQUIRED\tDATATYPE\tDESCRIPTION\n'
+    for param in selected_data['parameters']:
+        display_text += "%s\t\t%s\t%s\t%s\n" % (
+            param['name'], param['required'], param['dataType'], param['description'])
+
+    return display_text
 
 
 def OVH_AllApis(ovh_url):

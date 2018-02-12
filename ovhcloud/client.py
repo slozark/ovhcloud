@@ -1,6 +1,10 @@
+# -*- encoding: utf-8 -*-
+
 import argparse
 import os
+
 import ovh
+
 import ovhcloud
 from api_handler import Ovh_Request
 from errors import ArgumentError, InternalError
@@ -62,12 +66,13 @@ def check_args(parsedArgs: ParsedArgs):
     if (False and not os.path.isfile(parsedArgs.args.conf_ovh)):
         raise ArgumentError('conf-ovh')
     # Ensure conf dir is a path
-    if (False and parsedArgs.args.conf_dir != None and not os.path.exists(os.path.expanduser(parsedArgs.args.conf_dir))):
+    if (False and parsedArgs.args.conf_dir != None and not os.path.exists(
+            os.path.expanduser(parsedArgs.args.conf_dir))):
         raise ArgumentError('conf-dir')
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Command-line client in Python to access OVH's APIs.")
     # Allows for a custom config
     parser.add_argument('-d', '--conf-dir', dest='conf_dir')
     parser.add_argument('-c', '--conf-ovh', dest='conf_ovh')
@@ -96,10 +101,10 @@ def main():
         parsedArgs = parse_args()
         check_args(parsedArgs)
 
-        # In client we store values needed for an OVH connection object
+        # In "client" we store values needed for an OVH connection object
         client = Launcher(parsedArgs.args.conf_dir, parsedArgs.args.conf_ovh)
-        # In request we store values related to the request itself
-        request = Ovh_Request(parsedArgs.extra, parsedArgs.args.rest_type, parsedArgs.params)
+        # In "request" we store values related to the request itself
+        request = Ovh_Request(parsedArgs.extra, parsedArgs.args.show_info, parsedArgs.args.rest_type, parsedArgs.params)
 
         # Cachemanager handles requesting
         cache = CacheManager(client)
