@@ -15,6 +15,7 @@ This basic command sends a GET request to the vps API.  In the case of a multi-p
 
 Flag | Long version | Description
 --- | --- | ---
+-h | --help | Display parser usage
 -i | --info | Will display contextual information based on the url you provided to help you make a correct request
 -c | --conf-ovh | Specify the path to your OVH credentials file.  Default : `~/.ovhcloud/`
 -d | --conf-dir | Specify where ovhcloud should store its cache etc.  Default : `~/.ovhcloud/ovh.conf`
