@@ -1,6 +1,7 @@
 # OVH Credentials
 
 ovh.conf
+.idea
 .idea/inspectionProfiles/
 .idea/misc.xml
 .idea/modules.xml
