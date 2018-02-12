@@ -28,7 +28,7 @@ class Ovh_Request(object):
 
     @property
     def showInfo(self):
-        return self.showInfo
+        return self._show_info
 
     @property
     def method(self):
@@ -106,6 +106,7 @@ class Api_Handler(object):
 
     # Based on the command line provided, the displayed information changes
     def display_info(self):
+        #TODO differenciate complete URLs from partial ones
         return ""
 
 
