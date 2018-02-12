@@ -2,6 +2,7 @@ import json
 
 import ovh as ovh
 import requests
+import ovhcloud
 
 from ovh import Client as OvhClient
 from errors import InternalError
@@ -62,6 +63,10 @@ class Api_Handler(object):
             print(str(e))
             print("Invalid URL: " + self._ovh_request.url)
             exit(1)
+        except ovh.exceptions.BadParametersError as e:
+            print(str(e))
+            showApiArguments(self._ovh_request.url, self._ovh_request.method)
+            exit(1)
 
         self.printResult(response)
 
@@ -75,18 +80,28 @@ class Api_Handler(object):
 
     # Specific treatment for POST
     def launch_post(self):
-        response = self._ovh_client.post(self._ovh_request.url)
+        response = self._ovh_client.post(self._ovh_request.url, **self._ovh_request.data)
 
     # Specific treatment for PUT
     def launch_put(self):
-        response = self._ovh_client.put(self._ovh_request.url)
+        response = self._ovh_client.put(self._ovh_request.url, **self._ovh_request.data)
 
     # Specific treatment for DELETE
     def launch_delete(self):
         response = self._ovh_client.delete(self._ovh_request.url)
 
 
+def showApiArguments(url, rest_type):
+    url_base = url.split('/')[1]
+    base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base + ".json")
+    base_api_json = base_api_data.json()
+
+    selected_api = [s for s in base_api_json['apis'] if s['path'] == url][0]
+    selected_data = [s for s in selected_api['operations'] if s['httpMethod'] == rest_type.upper()][0]
+    print(base_api_data)
+
+
 def OVH_AllApis(ovh_url):
-    # Get the list of primary OVH api's
+    # Get the list of primary OVH API's
     request_data = requests.get(url=ovh_url)
     return json.loads(request_data.text)

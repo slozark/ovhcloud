@@ -50,22 +50,22 @@ class CacheManager(object):
             cache_data = json.loads(json_data)
 
             api_handler = None
-            '''
+
             for api in cache_data["apis"]:
 
                 # We get the primary part of the urls and compare them
                 # Ex : /me/foo/thing -> /me
                 # TODO
 
-
-
+                '''
                 if (api["path"] == request.url):
                     api_handler = Api_Handler(self._client.ovhApi, request)
                     continue
+                '''
 
             if api_handler is None:
                 print("This API does not exist.")
                 exit(1)
 
             api_handler.request()
-            '''
+

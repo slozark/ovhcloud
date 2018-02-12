@@ -38,7 +38,8 @@ class ParsedArgs(object):
     def __init__(self, args, extra, params=None):
         self._args = args
         self._extra = extra
-        self._params = params
+        self._params = {} if params is None \
+            else dict(item.split("=") for item in params)
 
     @property
     def args(self):
