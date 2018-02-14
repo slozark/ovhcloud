@@ -90,19 +90,19 @@ class Api_Handler(object):
 
     # Specific treatment for GET
     def launch_get(self):
-        response = self._ovh_client.get(self._ovh_request.url)
+        return self._ovh_client.get(self._ovh_request.url)
 
     # Specific treatment for POST
     def launch_post(self):
-        response = self._ovh_client.post(self._ovh_request.url, **self._ovh_request.data)
+        return self._ovh_client.post(self._ovh_request.url, **self._ovh_request.data)
 
     # Specific treatment for PUT
     def launch_put(self):
-        response = self._ovh_client.put(self._ovh_request.url, **self._ovh_request.data)
+        return self._ovh_client.put(self._ovh_request.url, **self._ovh_request.data)
 
     # Specific treatment for DELETE
     def launch_delete(self):
-        response = self._ovh_client.delete(self._ovh_request.url)
+        return self._ovh_client.delete(self._ovh_request.url)
 
     # Based on the command line provided, the displayed information changes
     def display_info(self):
@@ -111,10 +111,12 @@ class Api_Handler(object):
 
 
 def showApiArguments(url, rest_type):
+    # Get the whole API file
     url_base = url.split('/')[1]
     base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base + ".json")
     base_api_json = base_api_data.json()
 
+    # Pinpoint the specific data base on the url
     selected_api = [s for s in base_api_json['apis'] if s['path'] == url][0]
     selected_data = [s for s in selected_api['operations'] if s['httpMethod'] == rest_type.upper()][0]
 

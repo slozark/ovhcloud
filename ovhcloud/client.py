@@ -15,10 +15,10 @@ class Launcher(object):
         self._configuration_dir = ovhcloud.DEFAULT_CONFIGURATION_DIR \
             if conf_dir is None else conf_dir
 
-        self._configuration_file = ovhcloud.DEFAULT_CONFIGURATION_DIR + '/ovh.conf' \
-            if conf_ovh is None else conf_ovh
+        self._configuration_file = ovhcloud.DEFAULT_CONFIGURATION_DIR + ovhcloud.DEFAULT_CONFIGURATION_FILE \
+            if conf_ovh is None else self._configuration_dir + conf_ovh
 
-        self._ovhClient = ovh.Client(config_file=self.configurationFile)
+        self._ovhClient = ovh.Client(config_file=self._configuration_file)
         self._isCached = caching
 
     @property
