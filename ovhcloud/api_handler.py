@@ -134,7 +134,7 @@ class Api_Handler(object):
                              % (self._ovh_request.method, self._ovh_request.url, ("is" if valid else "is not"))
 
         # 2 - Exists in other modes ?
-
+        displayed_message += "\t2)\tMore coming soon"
 
         # 3 - See also
 
