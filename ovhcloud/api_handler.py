@@ -87,7 +87,7 @@ class Api_Handler(object):
         self.printResult(response)
 
     def printResult(self, response):
-        print(response)
+        print(json.dumps(response, indent=4, sort_keys=True))
         exit(0)
 
     # Specific treatment for GET
