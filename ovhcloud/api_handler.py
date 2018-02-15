@@ -9,6 +9,7 @@ import ovhcloud
 from ovh import Client as OvhClient
 from ovhcloud.errors import InternalError
 
+
 class Ovh_Request(object):
     """
         This class is used to store the clients request values
@@ -18,6 +19,7 @@ class Ovh_Request(object):
         :param request_data : Data for REST (put/post)
         :param show_info : flag asking for information
     """
+
     def __init__(self, cli_req, show_info, rest_method, request_data):
         self._url = self.build_url(cli_req)
         self._show_info = show_info
@@ -81,7 +83,7 @@ class Api_Handler(object):
         except ovh.exceptions.BadParametersError as e:
             print(str(e))
             print("See the list of properties for this API below :\n %s" % showApiArguments(self._ovh_request.url,
-                                                                                         self._ovh_request.method))
+                                                                                            self._ovh_request.method))
             exit(1)
 
         self.printResult(response)
@@ -108,7 +110,7 @@ class Api_Handler(object):
 
     # Based on the command line provided, the displayed information changes
     def display_info(self):
-        #TODO differenciate complete URLs from partial ones
+        # TODO differenciate complete URLs from partial ones
 
         return ""
 
@@ -127,11 +129,20 @@ def showApiArguments(url, rest_type):
 
     return display_text
 
+
 def OVH_specificApi(ovh_url):
     # Get the whole API file
-    url_base = ovh_url.split('/')[1]
-    base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base + ".json")
-    base_api_json = base_api_data.json()
+    url_base = ovh_url.split('/')
+    base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base[1] + ".json")
+
+    # For some reason, OVH doesn't always sends an API named
+    # by the first part of the url, so we have to also check
+    # the second (eg : https://api.ovh.com/1.0/hosting/web.json)
+    if (base_api_data.status_code == 404):
+        base_api_data = requests.get("%s/%s/%s.json" % (ovhcloud.OVH_API_URL, url_base[1], url_base[2]))
+
+    return base_api_data.json()
+
 
 def OVH_allApis():
     # Get the list of primary OVH API's
