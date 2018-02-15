@@ -27,7 +27,7 @@ class CacheManager(object):
 
 
     def useCache(self):
-        from api_handler import OVH_AllApis
+        from api_handler import OVH_allApis
 
         # Check if the requested url exists in the cache
         # Check if a cache exists, create if not
@@ -45,7 +45,7 @@ class CacheManager(object):
         if new_cache:
             # We need to make a new file and store the existing APIs in it
             with open(self._client.configurationDir + ovhcloud.CACHE_FILE, 'w') as outfile:
-                json.dump(OVH_AllApis(ovhcloud.OVH_API_URL), outfile)
+                json.dump(OVH_allApis(ovhcloud.OVH_API_URL), outfile)
         else:
             # Check if url user requested exists
             json_data = open(self._client.configurationDir + ovhcloud.CACHE_FILE).read()

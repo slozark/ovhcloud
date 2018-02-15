@@ -9,15 +9,15 @@ import ovhcloud
 from ovh import Client as OvhClient
 from ovhcloud.errors import InternalError
 
-"""
-    This class is used to store the clients request values
-    
-    :param cli_req : The requested url (ex : /me/accessRestriction/enable)
-    :param rest_method : The REST method type (ex: POST)
-    :param request_data : Data for REST (put/post)
-    :param show_info : flag asking for information
-"""
 class Ovh_Request(object):
+    """
+        This class is used to store the clients request values
+
+        :param cli_req : The requested url (ex : /me/accessRestriction/enable)
+        :param rest_method : The REST method type (ex: POST)
+        :param request_data : Data for REST (put/post)
+        :param show_info : flag asking for information
+    """
     def __init__(self, cli_req, show_info, rest_method, request_data):
         self._url = self.build_url(cli_req)
         self._show_info = show_info
@@ -109,14 +109,12 @@ class Api_Handler(object):
     # Based on the command line provided, the displayed information changes
     def display_info(self):
         #TODO differenciate complete URLs from partial ones
+
         return ""
 
 
 def showApiArguments(url, rest_type):
-    # Get the whole API file
-    url_base = url.split('/')[1]
-    base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base + ".json")
-    base_api_json = base_api_data.json()
+    base_api_json = OVH_specificApi(url)
 
     # Pinpoint the specific data base on the url
     selected_api = [s for s in base_api_json['apis'] if s['path'] == url][0]
@@ -129,8 +127,13 @@ def showApiArguments(url, rest_type):
 
     return display_text
 
+def OVH_specificApi(ovh_url):
+    # Get the whole API file
+    url_base = ovh_url.split('/')[1]
+    base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base + ".json")
+    base_api_json = base_api_data.json()
 
-def OVH_AllApis(ovh_url):
+def OVH_allApis():
     # Get the list of primary OVH API's
-    request_data = requests.get(url=ovh_url)
+    request_data = requests.get(url=ovhcloud.OVH_API_URL)
     return json.loads(request_data.text)

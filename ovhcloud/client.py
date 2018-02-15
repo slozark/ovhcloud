@@ -94,6 +94,7 @@ def parse_args():
     params = [s for s in extras if "=" in s]
     extras = [s for s in extras if s not in params]
 
+    # If no arguments provided, display help and exit
     if(len(extras)==0):
         parser.print_help()
         parser.exit()
