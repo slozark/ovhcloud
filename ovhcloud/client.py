@@ -59,6 +59,7 @@ class ParsedArgs(object):
 
 
 def check_args(parsedArgs: ParsedArgs):
+
     # Ensure REST method validity
     if (parsedArgs.args.rest_type is None or (parsedArgs.args.rest_type).lower() not in ovhcloud.REST_METHODS):
         raise ArgumentError('rest-type')
@@ -71,16 +72,16 @@ def check_args(parsedArgs: ParsedArgs):
         raise ArgumentError('conf-dir')
 
 def display_usage():
-    return '''ovhcloud [-d conf_dir] [-c conf_file] {get,put,post,delete} url parts [param=value [...]] [-i]'''
+    return '''ovhcloud {get,put,post,delete} url parts [param=value [...]] [-i] [-d conf_dir] [-c conf_file] '''
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Command-line client in Python to access OVH's APIs.", usage=display_usage())
     # Allows for a custom config
-    parser.add_argument('-d', '--conf-dir', dest='conf_dir', metavar='conf_dir', help="Specify ovhcloud's storage directory")
-    parser.add_argument('-c', '--conf-ovh', dest='conf_ovh', metavar='conf_file', help="Specify an OVH configuration file path")
+    parser.add_argument('-d', '--conf-dir', dest='conf_dir', metavar='conf_dir', help="specify ovhcloud's storage directory")
+    parser.add_argument('-c', '--conf-ovh', dest='conf_ovh', metavar='conf_file', help="specify an OVH configuration file path")
 
     # This arg displays information regarding the provided url
-    parser.add_argument('-i', '--info', action="store_true", dest="show_info", help="Display more information on the url parts")
+    parser.add_argument('-i', '--info', action="store_true", dest="show_info", help="display more information on the url parts")
 
     # Gets the REST Method : 'get' by default or must specify {get,post,put,delete}
     parser.add_argument(dest='rest_type', choices=ovhcloud.REST_METHODS, nargs='?', default='get')
@@ -92,6 +93,10 @@ def parse_args():
     # We use the '=' character to get those parameters and remove them from extras
     params = [s for s in extras if "=" in s]
     extras = [s for s in extras if s not in params]
+
+    if(len(extras)==0):
+        parser.print_help()
+        parser.exit()
 
     return ParsedArgs(args, extras, params)
 

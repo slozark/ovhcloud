@@ -4,7 +4,7 @@ Command-line client in Python to access OVH's APIs.
 ## Usage
 
 ```
-usage: ovhcloud [-d conf_dir] [-c conf_file] {get,put,post,delete} url parts [param=value [...]] [-i]
+usage: ovhcloud {get,put,post,delete} url parts [param=value [...]] [-i] [-d conf_dir] [-c conf_file]
 
 Command-line client in Python to access OVH's APIs.
 
@@ -14,10 +14,10 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d conf_dir, --conf-dir conf_dir
-                        Specify ovhcloud's storage directory
+                        specify ovhcloud's storage directory
   -c conf_file, --conf-ovh conf_file
-                        Specify an OVH configuration file path
-  -i, --info            Display more information on the url parts
+                        specify an OVH configuration file path
+  -i, --info            display more information on the url parts
 ```
 
 ovhcloud parses the users arguments based on a specific syntax.  Some optional parameters will require a flag while some won't.  Please have a look below on how to use it :
@@ -45,7 +45,15 @@ OVH's APIs will sometimes require you (especially in PUT and POST mode) to provi
 
 ## Install
 
-    pip install ovhcloud
+    pip install ovhcloud (not available yet)
+    
+    OR
+    
+    python3 setup.py build && sudo python3 setup.py install
+
+## License
+
+This project is under the GPL3 license.
 
 ## Acknowledgments
 
