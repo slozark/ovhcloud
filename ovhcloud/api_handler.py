@@ -7,14 +7,16 @@ import requests
 import ovhcloud
 
 from ovh import Client as OvhClient
-from errors import InternalError
+from ovhcloud.errors import InternalError
 
-
-# This class is used to store the clients request values
-# @cli_req : The requested url (ex : /me/accessRestriction/enable)
-# @rest_method : The REST method type (ex: POST)
-# @request_data : Data for REST (put/post)
-# @show_info : flag asking for information
+"""
+    This class is used to store the clients request values
+    
+    :param cli_req : The requested url (ex : /me/accessRestriction/enable)
+    :param rest_method : The REST method type (ex: POST)
+    :param request_data : Data for REST (put/post)
+    :param show_info : flag asking for information
+"""
 class Ovh_Request(object):
     def __init__(self, cli_req, show_info, rest_method, request_data):
         self._url = self.build_url(cli_req)
@@ -78,7 +80,7 @@ class Api_Handler(object):
             exit(1)
         except ovh.exceptions.BadParametersError as e:
             print(str(e))
-            print("See the list of properties for this API below :\n" + showApiArguments(self._ovh_request.url,
+            print("See the list of properties for this API below :\n %s" % showApiArguments(self._ovh_request.url,
                                                                                          self._ovh_request.method))
             exit(1)
 

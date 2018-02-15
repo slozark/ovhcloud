@@ -4,8 +4,8 @@ import json
 import os
 
 import ovhcloud
-from api_handler import Ovh_Request, Api_Handler
-from client import Launcher
+from ovhcloud.api_handler import Ovh_Request, Api_Handler
+from ovhcloud.client import Launcher
 
 
 class CacheManager(object):

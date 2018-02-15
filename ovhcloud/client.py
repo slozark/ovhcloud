@@ -6,8 +6,8 @@ import os
 import ovh
 
 import ovhcloud
-from api_handler import Ovh_Request
-from errors import ArgumentError, InternalError
+from ovhcloud.api_handler import Ovh_Request
+from ovhcloud.errors import ArgumentError, InternalError
 
 
 class Launcher(object):
@@ -97,7 +97,7 @@ def parse_args():
 
 
 def main():
-    from cache_manager import CacheManager
+    from ovhcloud.cache_manager import CacheManager
 
     try:
         parsedArgs = parse_args()

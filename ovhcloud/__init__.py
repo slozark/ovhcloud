@@ -3,11 +3,9 @@
 import logging
 import os
 
-from pkg_resources import get_distribution, resource_filename
+from pkg_resources import get_distribution
 
-#__version__ = get_distribution('ovhcloud').version
-__version__ = '0.1'
-
+__version__ = get_distribution('ovhcloud').version
 
 #Global values
 DEFAULT_CONFIGURATION_DIR = os.path.expanduser('~/.ovhcloud/')

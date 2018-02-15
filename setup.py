@@ -1,7 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='ovhcloud',
+
+    version='0.2',
 
     use_scm_version=True,
 
@@ -27,21 +29,19 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    keywords='cloud ovh',
+    keywords='cloud ovh api',
 
-    packages=['ovhcloud'],
+    packages=find_packages(),
 
-    package_data={'ovhcloud': ['endpoints_cache.json']},
+    #package_data={'ovhcloud': ['endpoints_cache.json']},
 
-    install_requires=['ovh==0.4.8'],
+    install_requires=['ovh>=0.4.8'],
 
     tests_require=['pytest>=3.0.7',
                    'pytest-capturelog>=0.7',
                    'coverage>=4.4.0'],
 
     include_package_data=True,
-
-    #scripts=['client.py'],
 
     entry_points={
         'console_scripts': [
