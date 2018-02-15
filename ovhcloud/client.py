@@ -118,6 +118,8 @@ def main():
         cache = CacheManager(client)
         cache.checkCache(request)
 
+        exit(0)
+
     except ArgumentError as e:
         print("Invalid argument \"%s\", aborting." % (e.value))
         exit(1)

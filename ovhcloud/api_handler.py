@@ -55,27 +55,21 @@ class Api_Handler(object):
         self._ovh_request = request
         self._ovh_client = ovh_client
 
-    def request(self):
-
+    """
+        This is the main function of the Api handler, it will
+        decide to call or not a request to the API and show results.
+        In some cases (eg display help), we need to make a 
+        raw request (send_request) so I had to divide requests in two
+    """
+    def request(self, display=True):
         # If the user asked for information, only display that information
         if (self._ovh_request.showInfo):
-            print(self.display_info())
+            self.display_info()
             exit(0)
-
-        response = None
 
         # Handle specific treatment and generic exceptions (eg invalid URL)
         try:
-            if (self._ovh_request.method == 'get'):
-                response = self.launch_get()
-            elif (self._ovh_request.method == 'post'):
-                response = self.launch_post()
-            elif (self._ovh_request.method == 'put'):
-                response = self.launch_put()
-            elif (self._ovh_request.method == 'delete'):
-                response = self.launch_delete()
-            else:
-                raise InternalError('Invalid REST method')
+            response = self.send_request()
         except ovh.exceptions.ResourceNotFoundError as e:
             print(str(e))
             print("Invalid URL: " + self._ovh_request.url)
@@ -86,11 +80,28 @@ class Api_Handler(object):
                                                                                             self._ovh_request.method))
             exit(1)
 
-        self.printResult(response)
+        if (display): self.printResult(response)
+
+
+    def send_request(self):
+        response = None
+
+        if (self._ovh_request.method == 'get'):
+            response = self.launch_get()
+        elif (self._ovh_request.method == 'post'):
+            response = self.launch_post()
+        elif (self._ovh_request.method == 'put'):
+            response = self.launch_put()
+        elif (self._ovh_request.method == 'delete'):
+            response = self.launch_delete()
+        else:
+            raise InternalError('Invalid REST method')
+
+        return response
+
 
     def printResult(self, response):
         print(json.dumps(response, indent=4, sort_keys=True))
-        exit(0)
 
     # Specific treatment for GET
     def launch_get(self):
@@ -110,9 +121,25 @@ class Api_Handler(object):
 
     # Based on the command line provided, the displayed information changes
     def display_info(self):
-        # TODO differenciate complete URLs from partial ones
+        displayed_message = ""
 
-        return ""
+        # 1 - Valid request ?
+        valid=True
+        try:
+            request_result = self.send_request()
+        except ovh.exceptions.ResourceNotFoundError as e:
+            valid=False
+
+        displayed_message += "\t1)\t%s %s %s a valid request" \
+                             % (self._ovh_request.method, self._ovh_request.url, ("is" if valid else "is not"))
+
+        # 2 - Exists in other modes ?
+
+
+        # 3 - See also
+
+
+        print(displayed_message)
 
 
 def showApiArguments(url, rest_type):
@@ -136,7 +163,7 @@ def OVH_specificApi(ovh_url):
     base_api_data = requests.get(ovhcloud.OVH_API_URL + "/" + url_base[1] + ".json")
 
     # For some reason, OVH doesn't always sends an API named
-    # by the first part of the url, so we have to also check
+    # by the first part of the url, so we also have to check
     # the second (eg : https://api.ovh.com/1.0/hosting/web.json)
     if (base_api_data.status_code == 404):
         base_api_data = requests.get("%s/%s/%s.json" % (ovhcloud.OVH_API_URL, url_base[1], url_base[2]))
