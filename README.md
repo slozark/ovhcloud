@@ -6,7 +6,8 @@ Command-line client in Python to access OVH's APIs.
 This project is written in Python 3 and uses the following modules :
 - [python-ovh](https://github.com/ovh/python-ovh)
 
-You'll also need an OVH credentials file (more info [here](https://github.com/ovh/python-ovh#environment-vars-and-predefined-configuration-files)).  You'll find a dummy file with the sources, which you can fill by submitting [this form](https://eu.api.ovh.com/createToken/).  In a close release, this step won't be necessary.
+You'll also need an OVH credentials file (more info [here](https://github.com/ovh/python-ovh#environment-vars-and-predefined-configuration-files)).  You'll find a dummy file with the sources, which you can fill by submitting [this form](https://eu.api.ovh.com/createToken/).  Add `/*` rights to GET, PUT, POST and DELETE for a full access.
+In a close release, this step won't be necessary.
 By default, ovhcloud will check for `~/.ovhcloud/ovh.conf`.
 
 ## Usage
