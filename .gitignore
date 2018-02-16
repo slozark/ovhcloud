@@ -1,15 +1,9 @@
 # OVH Credentials
 
-ovh.conf
 .idea
-.idea/vcs.xml
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/ovhcloud.iml
-.idea/workspace.xml
-/ovh.conf2
 __pycache__/
-ovh.conf2
-ovh.conf3
 ovhcloud/__pycache__/
+.eggs/
+build/
+dist/
+ovhcloud.egg-info/
