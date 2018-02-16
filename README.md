@@ -46,7 +46,7 @@ Flag | Long version | Description
 -c | --conf-ovh | Specify the path to your OVH credentials file.  Default : `~/.ovhcloud/`
 -d | --conf-dir | Specify where ovhcloud should store its cache etc.  Default : `~/.ovhcloud/ovh.conf`
 
-## POST/PUT parameters
+## Request parameters
 OVH's APIs will sometimes require you (especially in PUT and POST mode) to provide parameters for your request.  To do so, add the parameter name followed by an equal sign and its value to the command line, e.g.:
 
     ovhcloud post cloud createProject catalogVersion=1 description=foo
