@@ -65,4 +65,6 @@ This project is under the GPL3 license.
 
 ## Acknowledgments
 
-This project is based on @kartoch 's [ovhcloud](https://github.com/kartoch/ovhcloud) and was made as a part of the PFE class at Lille University (France).  Please be aware it's still in its early stage and will be improved with time.
+Currently in alpha, user-friendly improvements coming soon.
+
+This project is based on @kartoch 's [ovhcloud](https://github.com/kartoch/ovhcloud) and was made as a part of the PFE class at Lille University (France).
